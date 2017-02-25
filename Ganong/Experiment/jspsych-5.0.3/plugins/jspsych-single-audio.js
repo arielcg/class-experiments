@@ -69,7 +69,7 @@ jsPsych.plugins["single-audio"] = (function() {
       // gather the data to store for the trial
       var trial_data = {
         "rt": response.rt * 1000,
-        "stimulus": trial.audio_path,
+        "stimulus": trial.stimulus, //changed from default "trial.audio_path"
         "key_press": response.key
       };
 
