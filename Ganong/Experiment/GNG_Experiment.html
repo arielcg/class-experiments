@@ -40,7 +40,10 @@
   	var welcome_trial = {
 		type: 'single-text',
 		questions: ["Welcome to the experiment. Please enter Subject ID and press Submit to begin...."],
-		size: 30
+		size: 30,
+		on_finish: function(data) {
+			jsPsych.data.addProperties({subject: data.responses});
+		}
 	};
 	
 	/* Instructions Block */
@@ -202,7 +205,7 @@
     
     //-------- Create the Experiment Timeline ---------//
     var timeline = [];
-    //timeline.push(welcome_trial);
+    timeline.push(welcome_trial);
     //timeline.push(instructions_block);
     
     
@@ -240,7 +243,7 @@
 	    }
     }
     
-    timeline.push(final_screen);
+    //timeline.push(final_screen);
     
 	//timeline.push(test);
     
@@ -248,7 +251,18 @@
     jsPsych.init({
         timeline: timeline,
         on_finish: function() {
-        	jsPsych.data.displayData();
+        	//jsPsych.data.displayData();
+        	var audioData = jsPsych.data.getTrialsOfType('single-audio');
+        	var x;
+        	var dataString = '"Subject","Trial","Continuum","Stimulus","Continuum_Step","Response"<br/>';
+        	
+        	for (x = 0; x < audioData.length; x++) {
+        		var trial = x+1;
+        		dataString += audioData[x].subject+','+trial+',"'+audioData[x].continuum+'","'+audioData[x].stimulus+'",'+audioData[x].step+',"'+audioData[x].response+'"<br/>';
+        	}
+        	var display_element = jsPsych.getDisplayElement();
+        	display_element.append($('<pre id="jspsych-data-display">'+dataString+'</pre>'));
+        	
         }
     })
 
