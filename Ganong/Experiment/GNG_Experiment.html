@@ -4,13 +4,159 @@
         <title>GNG Experiment</title>
         
         <!-- Import jsPsych Library & Stylesheet //-->
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="jspsych-5.0.3/jspsych.js"></script>
         <link href="jspsych-5.0.3/css/jspsych.css" rel="stylesheet" type="text/css"></link>
         
         <!-- Load jsPsych Plugins Here //-->
         
+
+        <script src="jspsych-5.0.3/plugins/jspsych-instructions.js"></script>
+        <script src="jspsych-5.0.3/plugins/jspsych-text.js"></script>
+        <script src="jspsych-5.0.3/plugins/jspsych-single-textbox.js"></script>
+        <script src="jspsych-5.0.3/plugins/jspsych-single-audio.js"></script>
+        <script src="jspsych-5.0.3/plugins/jspsych-single-stim.js"></script>
+
+        
+        
+        <style>
+    		div.options {
+    			position: fixed;
+	    		top: 300px;
+				right: 550px;
+			}
+			div.centered {
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				text-align: center;
+  				/* bring your own prefixes */
+  				transform: translate(-50%, -50%);
+			}
+		</style>
+        
     </head>
     <body>
+    
+    <script>
+
+	/* Welcome */
+  	var welcome_trial = {
+		type: 'single-text',
+		questions: ["Welcome to the experiment. Please enter Subject ID and press Submit to begin...."],
+		size: 30
+	};
+	
+	/* Instructions Block */
+
+	var instructions_block = {
+    	type: 'instructions',
+    	pages: [
+    	    'Welcome to the experiment. Click next to begin.',
+    	    'This is the second page of instructions.',
+   	     	'This is the final page.'
+   		],
+    	show_clickable_nav: true
+	};
+	
+	
+	
+	
+	
+	
+	/* -----------------Continuum1 Block---------------------- */
+	
+	
+	var continuum1_instructions = {
+		type: 'text',
+		text: '<div class="centered"><p>In this block, press 1 if you hear DASH and press 0 if you heard TASH.</p><p>Press the spacebar to begin.</p>',
+		cont_key: [' ']
+	}
+	
+	//Put all of your stimuli here
+	var continuum1_stimuli = [
+		/*{stimulus: "dash-tash_VOT_5.wav"},
+		{stimulus: "dash-tash_VOT_2.wav"},
+		{stimulus: "dash-tash_VOT_3.wav"},
+		{stimulus: "dash-tash_VOT_4.wav"},
+		{stimulus: "dash-tash_VOT_5.wav"},
+		{stimulus: "dash-tash_VOT_6.wav"},
+		{stimulus: "dash-tash_VOT_7.wav"},
+		{stimulus: "dash-tash_VOT_8.wav"},*/
+		{stimulus: "dash-tash_VOT_5.wav"}
+	];
+	
+	//Make 9 copies of each stimulus and randomize them
+	//1 for debugging, change to 9 for exp
+	var continuum1_stimuli_randomized = jsPsych.randomization.repeat(continuum1_stimuli, 1);
+
+	
+	var continuum1_block = {
+		type: 'single-audio',
+		prompt: '<div class="centered">1/DASH--------------------------------------------0/TASH</div>',		//fill this in with your (non)words
+		choices: ['1','0'],
+		data: { continuum: 'dash-tash' },  //fill this in with your (non)words. This will facilitate your data analysis.
+		
+		timeline: continuum1_stimuli_randomized,
+		
+		
+		on_finish: function(data) {
+			var key = String.fromCharCode(data.key_press);
+			
+			if (key == '1') {
+				resp = "dash";  			//fill this in with what response 1 should correspond to
+			}
+			else if (key == '0') {
+				resp = "tash";				//fill this in with what response 0 should correspond to
+     		}
+      		jsPsych.data.addDataToLastTrial({response: resp});
+    	},	
+	};
+	
+	/* -------------End of Continuum1 Block------------------- */
+	
+	
+	/* TODO
+	
+	make a system to randomize the order of the blocks
+	Change the number of stimuli copies to 9
+	add something to filter out irrelevant trials from the data
+	comment the code
+	(last)Make 6 copies of the continuum
+	
+	*/
+	
+	
+	
+	
+	//Final Screen
+	var final_screen = {
+		type: 'text',
+		text: '<div class="centered"><p>This is the end of the experiment. Thank you for your participation.</p>' +
+				  '<p>Please press any key to end this session and bring up results.</p>'
+	};
+    
+    
+    //-------- Create the Experiment Timeline ---------//
+    var timeline = [];
+    //timeline.push(welcome_trial);
+    //timeline.push(instructions_block);
+    timeline.push(continuum1_instructions);
+    timeline.push(continuum1_block);
+    timeline.push(final_screen);
+    
+	//timeline.push(test);
+    
+    
+    jsPsych.init({
+        timeline: timeline,
+        on_finish: function() {
+        	jsPsych.data.displayData();
+        }
+    })
+
+    </script>
+    
     </body>
 </html>
