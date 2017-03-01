@@ -14,7 +14,9 @@ jsPsych.plugins["multi-stim-multi-response"] = (function() {
 
   var plugin = {};
 
-  jsPsych.pluginAPI.registerPreload('multi-stim-multi-response', 'stimuli', 'image');
+	//For some reason it was trying to predload the html stimuli as images, even though
+	//is_html was set to true. Commented to prevent preloading.
+  //jsPsych.pluginAPI.registerPreload('multi-stim-multi-response', 'stimuli', 'image');
 
   plugin.trial = function(display_element, trial) {
 
