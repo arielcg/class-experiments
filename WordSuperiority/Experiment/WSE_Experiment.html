@@ -2,15 +2,376 @@
 <html>
     <head>
         <title>WSE Experiment</title>
-        
+
         <!-- Import jsPsych Library & Stylesheet //-->
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="jspsych-5.0.3/jspsych.js"></script>
         <link href="jspsych-5.0.3/css/jspsych.css" rel="stylesheet" type="text/css"></link>
-        
+
         <!-- Load jsPsych Plugins Here //-->
-        
+
+
+        <script src="jspsych-5.0.3/plugins/jspsych-instructions.js"></script>
+        <script src="jspsych-5.0.3/plugins/jspsych-text.js"></script>
+        <script src="jspsych-5.0.3/plugins/jspsych-single-textbox.js"></script>
+        <script src="jspsych-5.0.3/plugins/jspsych-single-audio.js"></script>
+        <script src="jspsych-5.0.3/plugins/jspsych-single-stim.js"></script>
+        <script src="jspsych-5.0.3/plugins/jspsych-multi-stim-multi-response.js"></script>
+
+
+
+        <style>
+			div.centered {
+				font-family: monospace;
+				text-transform: uppercase;
+				font-size: 36px;
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				text-align: center;
+  				/* bring your own prefixes */
+  				transform: translate(-50%, -50%);
+			}
+		</style>
+
     </head>
     <body>
+
+    <script>
+
+    /*-----------------Ganong Experiment Readme-----------------*/
+    //
+    //	Welcome to the Ganong Experiment script file
+    //
+    //
+    //	In this experiment, participants will be presented with 6 different continua and asked to report
+    //	what they hear.
+    //
+    //	Order of Experiment
+    //		1. Welcome Screen - Records Subject ID
+    //		2. Overall Instructions
+    //		3. Experimental Blocks
+    //			3a. Instructions
+    //			3b. Trials
+    //			3c. Break
+    //		4. Thank you
+    //		5. Data displayed on screen
+    //
+    //	Each block consists of trials from a single continuum.
+    //	There are 9 steps for each continuum and each step is randomly played 9 times.
+    //	Each block thus contains 81 trials.
+    //
+    //	Subjects respond by pushing either the 1 or 0 keys
+    //	Which response is assigned to 1/0 is randomized for each participant.
+    //
+    //
+    //	****There are two places where you need to make changes.****
+    //
+    //		1. 	Instructions_Block
+    //		   	Enter your own instructions to the participant.
+    //
+    //		2. 	Section labeled Parameters
+    //		   	This experiment consists of 6 blocks, one for each continuum
+    //			For each block you must specify
+    //				- the name of the voiced token
+    //				- the name of the voiceless token
+    //				- each of the 9 audio files
+    //
+    //
+    //	Once you have made all of the changes to these two sections you should be all set
+    //	to run the experiment.
+    //
+    //	To run the experiment, open this file in your favorite browser.
+    //
+    //
+    //	All of the data are presented at the end of the experiment. When the participant
+    //	has finished, copy and paste the data into a plaintext file. Give the textfile a name and
+    //	make sure it ends in the .csv extension. This will produce a comma delimited file that you
+    //	can then open easily in Excel.
+    //
+    //
+    //	Testing/Debugging Notes:
+    //
+    //	The variable 'copyNum' (declared just below this note) is used to determine how many times
+    //	each token is played. By default it is set to 9. If you need to debug the code for some reason,
+    //	it will take a long time to go through the experiment if each token is played 9 times. My suggestion
+    //	is to set this to 1 for debugging and then change it back to 9 when you are ready to conduct the
+    //	experiment.
+    //
+    /*---------------------------------------------------------*/
+
+
+	//Set how many times each step in a continuum is played for the participant
+	//default: 9
+	var copyNum = 9;
+
+
+	/* Welcome */
+  	var welcome_trial = {
+		type: 'single-text',
+		questions: ["Welcome to the experiment. Please enter Subject ID and press Submit to begin...."],
+		size: 30,
+		on_finish: function(data) {
+			jsPsych.data.addProperties({subject: data.responses});
+		}
+	};
+
+
+	/* Instructions Block */
+
+	//Please insert your own text here for the instructions the participant will receive.
+	//The participant will see this text once at the beginning of the experiment.
+	//
+	//To change the instructions, change the text in the "pages" variable below.
+	//Each line in the "pages" variable will be displayed as a separate page of instructions.
+	//Make sure that each line in the "pages" variable --except for the last one-- ends with a comma
+	//e.g.,
+	//pages: [
+    //	    'Welcome to the experiment. Click next to begin.',
+    //	    'This is the second page of instructions.',
+   	//     	'This is the final page.'
+   	//	],
+
+	var instructions_block = {
+    	type: 'instructions',
+    	pages: [
+    	    'Welcome to the experiment. Click next to begin.',
+    	    'This is the second page of instructions.',
+   	     	'This is the final page.'
+   		],
+    	show_clickable_nav: true
+	};
+
+
+
+	/* Parameters */
+
+	//Here you will specify some values for each continuum.
+	//	- contX_voiced: 	the voiced word/non-word for this continuum (e.g., DASH)
+	//	- contX_voiceless:	the voiceless word/non-word for this continuum (e.g., TASH)
+	//	- contX_stimY:		the path to the each audio file generated by PRAAT for this continuum. Should go in order (stim1 is shortest VOT, stim9 is longest VOT)
+	//							By default the experiment will look for these files in the "Stimuli" directory.
+	//                          Change this directory if you have placed the files in a different directory.
+
+
+	//Set these values for Continuum 1
+
+
+
+	///////////////////////////////////////////////////////////////////////////////////
+
+	var i = 0;
+	var stims = [];
+
+	word_stimuli = [
+	/* 1 */ ['tick','sick'],
+	/* 2 */ ['foam','roam'],
+	/* 3 */ ['soap','soak'],
+	/* 4 */ ['leaf','leap']
+	]
+
+	//Initial Pos words
+	init_w_stim = ['tick','roam'];
+	init_w_choices = [['t','s'],['f','r']];
+
+	//Initial Pos nonwords
+	init_n_stim = ['jeck','qeam'];
+	init_n_choices = [['j','s'],['q','n']];
+
+	//Final Pos words
+	final_w_stim = ['soap','silk'];
+	final_w_choices = [['p','k'],['k','t']];
+
+
+	for (i = 0; i < word_stimuli.length; i++) {
+    var diff_position;
+    var target;
+
+		var word1 = word_stimuli[i][0];
+		var word2 = word_stimuli[i][1];
+
+    var pos = findDiffPos(word1,word2);
+
+    var choice1 = word1.substring(pos-1,pos); //Subtract 1 to get to 0-index
+    var choice2 = word2.substring(pos-1,pos);
+
+    //alert(word1+" "+word2+" "+pos+" "+choice1+" "+choice2);
+
+    var top_choice;
+    var bottom_choice;
+
+    //Decide which word will be displayed
+  	if (Math.round(Math.random()) == 0) {
+  		target = word1;
+  	}
+  	else {
+  		target = word2;
+  	}
+
+    var correct_ans = target.substring(pos-1,pos);
+
+    //Decide which letter choice will be top/bottom
+    //Decide which word will be displayed
+  	if (Math.round(Math.random()) == 0) {
+  		top_choice = choice1;
+      bottom_choice = choice2;
+  	}
+  	else {
+      top_choice = choice2;
+      bottom_choice = choice1;
+  	}
+
+
+    var resp_str;
+    switch (pos) {
+      case 1:
+        diff_position = "initial";
+        resp_str = '<div class="centered">'+top_choice+'&nbsp;&nbsp;&nbsp;<br/>----<br/>'+bottom_choice+'&nbsp;&nbsp;&nbsp;</div>';
+        break;
+      case 2:
+        diff_position = "middle";
+        resp_str = '<div class="centered">&nbsp;'+top_choice+'&nbsp;&nbsp;<br/>----<br/>&nbsp;'+bottom_choice+'&nbsp;&nbsp;</div>';
+        break;
+      case 3:
+        diff_position = "middle";
+        resp_str = '<div class="centered">&nbsp;&nbsp;'+top_choice+'&nbsp;<br/>----<br/>&nbsp;&nbsp;'+bottom_choice+'&nbsp;</div>';
+        break;
+      case 4:
+        diff_position = "final";
+        resp_str = '<div class="centered">&nbsp;&nbsp;&nbsp;'+top_choice+'<br/>----<br/>&nbsp;&nbsp;&nbsp;'+bottom_choice+'</div>';
+        break;
+    }
+
+    var stimuli_array = [];
+    stimuli_array.push('<div class="centered">+</div>');         //Fixation
+    stimuli_array.push('<div class="centered">'+target+'</div>'); //Target word
+    stimuli_array.push('<div class="centered">****</div>');       //Mask
+    stimuli_array.push(resp_str);                                 //Response choices
+
+    stims.push({stimuli: stimuli_array, choices: [[choice1,choice2]], data: {stimtype: 'word', position: diff_position, target: target.toUpperCase(), correct_answer: correct_ans} });
+	}
+
+	function findDiffPos(w1, w2) {
+		var n = 0;
+		var pos = -1;
+		for (n = 0; n < w1.length; n++) {
+			if (w1.substring(n,n+1) != w2.substring(n,n+1)) {
+				if (pos == -1) {
+					pos = n;
+				}
+				else {
+					alert(w1+" "+w2+" pair doesn't differ by exactly 1 letter!");
+				}
+			}
+		}
+		return pos+1;
+	}
+
+	var wse_trial = {
+		type: 'multi-stim-multi-response',
+		//stimuli: ['<div class="centered">+</div>','<div class="centered">CARD</div>','<div class="centered">****</div>','<div class="centered">&nbsp;&nbsp;&nbsp;D<br/>----<br/>&nbsp;&nbsp;&nbsp;P</div>'],
+		//timing_stim: [500,500,500,-1],
+		timing_stim: [1000,70,150,-1],
+		is_html: true,
+		timeline: stims,
+		randomize_order: true,
+
+		on_finish: function(data) {
+			var key_pressed = String.fromCharCode(JSON.parse(data.key_press));
+			jsPsych.data.addDataToLastTrial({response: key_pressed});
+			jsPsych.data.addDataToLastTrial({reaction_time: JSON.parse(data.rt)})
+
+			if (data.key_pressed == data.correct_answer) {
+				jsPsych.data.addDataToLastTrial({accuracy: 1});
+			}
+			else {
+				jsPsych.data.addDataToLastTrial({accuracy: 0})
+			}
+		}
+	}
+
+
+
+
+
+	var exp_break = {
+		type: 'text',
+		text: '<div class="centered"><p>End of Block.</p><p>Please take a break and press the spacebar when you are ready to continue to the next block.</p>',
+		cont_key: [' ']
+	}
+
+	/* TODO
+
+	(✓)make a system to randomize the order of the blocks
+	(✓)Change the number of stimuli copies to 9
+	(✓)add something to filter out irrelevant trials from the data
+	( )comment the code
+	(✓)(last)Make 6 copies of the continuum
+
+	*/
+
+
+
+
+	//Final Screen
+	var final_screen = {
+		type: 'text',
+		text: '<div class="centered"><p>This is the end of the experiment. Thank you for your participation.</p>' +
+				  '<p>Please press any key to end this session and bring up the results.</p>'
+	};
+
+
+    //Fisher-Yates function to randomize the elements in an array
+    //from https://www.frankmitchell.org/2015/01/fisher-yates/
+
+    function shuffle (array) {
+		var i = 0;
+		var j = 0;
+    	var temp = null;
+
+  		for (i = array.length - 1; i > 0; i -= 1) {
+    		j = Math.floor(Math.random() * (i + 1));
+    		temp = array[i];
+    		array[i] = array[j];
+    		array[j] = temp;
+  		}
+  		return array;
+	}
+
+	///////////////////////////////////////////////////////////
+
+
+
+    //-------- Create the Experiment Timeline ---------//
+    var timeline = [];
+    //timeline.push(welcome_trial);
+    //timeline.push(instructions_block);
+
+    timeline.push(wse_trial);
+
+    //timeline.push(final_screen);
+
+
+    jsPsych.init({
+        timeline: timeline,
+        on_finish: function() {
+        	jsPsych.data.displayData();
+        	var WSE_Data = jsPsych.data.getTrialsOfType('multi-stim-multi-response');
+        	var x;
+        	var dataString = '"Subject","Trial","StimulusType","Position","Stimulus","Response","Accuracy","ReactionTime"<br/>';
+
+        	for (x = 0; x < WSE_Data.length; x++) {
+        		var trial = x+1;
+        		dataString += WSE_Data[x].subject+','+trial+',"'+WSE_Data[x].stimtype+'","'+WSE_Data[x].position+'","'+WSE_Data[x].target+'","'+WSE_Data[x].response+'",'+WSE_Data[x].accuracy+','+WSE_Data[x].reaction_time+'<br/>';
+        	}
+        	var display_element = jsPsych.getDisplayElement();
+        	display_element.append($('<pre id="jspsych-data-display">'+dataString+'</pre>'));
+
+        }
+    })
+
+    </script>
+
     </body>
 </html>
