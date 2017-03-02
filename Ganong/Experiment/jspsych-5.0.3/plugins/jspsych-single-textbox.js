@@ -68,7 +68,7 @@ jsPsych.plugins['single-text'] = (function() {
         obje[id] = val;
         question_data = parseInt(val)
       });
-
+      
 
       // save data
       var trialdata = {
