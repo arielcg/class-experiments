@@ -6,17 +6,15 @@
         <!-- Import jsPsych Library & Stylesheet //-->
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="jspsych-5.0.3/jspsych.js"></script>
-        <link href="jspsych-5.0.3/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+        <script src="jspsych-5.0.3/jspsych.js"></script> <!-- add ../ after the quotation mark and before 'jspsych' //-->
+        <link href="jspsych-5.0.3/css/jspsych.css" rel="stylesheet" type="text/css"></link> <!-- add ../ after the quotation mark and before 'jspsych' //-->
 
         <!-- Load jsPsych Plugins Here //-->
-
-
-        <script src="jspsych-5.0.3/plugins/jspsych-instructions.js"></script>
-        <script src="jspsych-5.0.3/plugins/jspsych-text.js"></script>
-        <script src="jspsych-5.0.3/plugins/jspsych-single-textbox.js"></script>
-        <script src="jspsych-5.0.3/plugins/jspsych-single-stim.js"></script>
-        <script src="jspsych-5.0.3/plugins/jspsych-multi-stim-multi-response.js"></script>
+        <script src="jspsych-5.0.3/plugins/jspsych-instructions.js"></script>   <!-- add ../ after the quotation mark and before 'jspsych' //-->
+        <script src="jspsych-5.0.3/plugins/jspsych-text.js"></script>           <!-- add ../ after the quotation mark and before 'jspsych' //-->
+        <script src="jspsych-5.0.3/plugins/jspsych-single-textbox.js"></script> <!-- add ../ after the quotation mark and before 'jspsych' //-->
+        <script src="jspsych-5.0.3/plugins/jspsych-single-stim.js"></script>    <!-- add ../ after the quotation mark and before 'jspsych' //-->
+        <script src="jspsych-5.0.3/plugins/jspsych-multi-stim-multi-response.js"></script>  <!-- add ../ after the quotation mark and before 'jspsych' //-->
 
 
 
@@ -48,41 +46,55 @@
     //  and asked to report what they see.
     //
     //	Order of Experiment
-    //		1. Welcome Screen - Records Subject ID
-    //		2. Overall Instructions
-    //		3. Experimental Blocks
-    //			3a. Instructions
-    //			3b. Trials
-    //			3c. Break
-    //		4. Thank you
-    //		5. Data displayed on screen
+    //		 1. Welcome Screen - Records Subject ID
+    //		 2. Overall Instructions
+    //		 3. Experimental Block 1
+    //     4. Break
+    //     5. Experimental Block 2
+    //     6. Break
+    //     7. Experimental Block 3
+    //     8. Break
+    //     9. Experimental Block 4
+    //		10. Thank you
+    //		11. Data displayed on screen
     //
-    //	Each block consists of trials from a single continuum.
-    //	There are 9 steps for each continuum and each step is randomly played 9 times.
-    //	Each block thus contains 81 trials.
-    //
-    //	Subjects respond by pushing either the 1 or 0 keys
-    //	Which response is assigned to 1/0 is randomized for each participant.
+    //	Each block consists of a random assortment of word, nonword,
+    //  and single letter trials.
     //
     //
-    //	****There are two places where you need to make changes.****
     //
-    //		1. 	Instructions_Block
+    //	****There are 3 places where you need to make changes.****
+    //
+    //    1.  At the very top of this file.
+    //        At the top of this HTML file, add ../ to the <script> and <link> lines, immediately before 'jspsych'.
+    //        The lines you need to add ../ to are indicated with comments at the end of the line.
+    //        NOTE: do not add it to the line with: <script src="https://ajax.googleapis
+    //
+    //		2. 	Instructions_Block
     //		   	Enter your own instructions to the participant.
     //
     //		2. 	Section labeled Parameters
-    //		   	This experiment consists of 6 blocks, one for each continuum
-    //			For each block you must specify
-    //				- the name of the voiced token
-    //				- the name of the voiceless token
-    //				- each of the 9 audio files
+    //        There are two arrays, word_stimuli and nonword_stimuli
+    //        Please replace the strings in each row with the stimuli that you have created
+    //        The two words that form a pair should be put on the same line (e.g., TICK and SICK)
+    //        I have grouped the rows into groups of 16, one group for word pairs that
+    //        differ in their first position, one group for word pairs that differ in positions 2 or 3
+    //        and one for word pairs that differ in the final position.
+    //
+    //        NOTE:
+    //            - Your words and non-words must be surrounded by single quotes or double quotes
+    //              e.g., 'tick', 'sick' or "tick", "sick"
+    //            - The words/nonwords can be written in lower or uppercase. They will be converted
+    //              to all uppercase automatically
+    //            - You can put the member of the pair in any order (TICK, SICK). The script
+    //              will automatically randomize which one the participant sees
+    //            - You do not need to enter the stimuli for the single letter pairs. The script
+    //              will automatically pull the letters that the stimuli differ by (e.g., T/S above)
+    //              and create trials from these letter pairs.
     //
     //
     //	Once you have made all of the changes to these two sections you should be all set
     //	to run the experiment.
-    //
-    //	To run the experiment, open this file in your favorite browser.
-    //
     //
     //	All of the data are presented at the end of the experiment. When the participant
     //	has finished, copy and paste the data into a plaintext file. Give the textfile a name and
@@ -92,11 +104,10 @@
     //
     //	Testing/Debugging Notes:
     //
-    //	The variable 'copyNum' (declared just below this note) is used to determine how many times
-    //	each token is played. By default it is set to 9. If you need to debug the code for some reason,
-    //	it will take a long time to go through the experiment if each token is played 9 times. My suggestion
-    //	is to set this to 1 for debugging and then change it back to 9 when you are ready to conduct the
-    //	experiment.
+    //  In the Parameters section, the variable 'debug_mode' controls whether the experiment
+    //  runs normally or runs in debug_mode. When debug_mode = false, the experiment runs normally.
+    //  When debug_mode = true, only 5 trials will be run in each block. Note that these
+    //  trials are chosen randomly.
     //
     /*---------------------------------------------------------*/
 
@@ -143,20 +154,15 @@
 
 	/* Parameters */
 
-	//Here you will specify some values for each continuum.
-	//	- contX_voiced: 	the voiced word/non-word for this continuum (e.g., DASH)
-	//	- contX_voiceless:	the voiceless word/non-word for this continuum (e.g., TASH)
-	//	- contX_stimY:		the path to the each audio file generated by PRAAT for this continuum. Should go in order (stim1 is shortest VOT, stim9 is longest VOT)
-	//							By default the experiment will look for these files in the "Stimuli" directory.
-	//                          Change this directory if you have placed the files in a different directory.
-
-
-	//Set these values for Continuum 1
-
-
-
 	///////////////////////////////////////////////////////////////////////////////////
 
+  //Debug mode. When in debug mode, the script will
+  //randomly assign 5 stimuli to each block rather than the full 36.
+  //Default: debug_mode = false
+  //Set debug_mode = true to use debug mode.
+  var debug_mode = false;
+
+  //This variable controls how long the target is displayed for (in ms). Default is 70.
   var target_duration = 70;
 
 	word_stimuli = [
@@ -280,7 +286,8 @@
 
   ]
 
-
+  //stims is the array that holds all of the stimuli
+  //These will be plugged into the multi-stim-multi-response trials
   var i = 0;
 	var stims = [];
 
@@ -383,6 +390,10 @@
   }
 
 
+  //Function to find the position of the difference between two Words
+  //for example, TALE and KALE would return position 1
+  //Note that position is 1-indexed (rather than starting with 0)
+
 	function findDiffPos(w1, w2) {
 		var n = 0;
 		var pos = -1;
@@ -399,16 +410,48 @@
 		return pos+1;
 	}
 
+
+  //Add the word stimuli to the stimulus array
+  //Also automatically adds the single-letter stimuli
   add_word_stimuli(word_stimuli,"word");
+  //Add the non-word stimuli to the stimulus array
   add_word_stimuli(nonword_stimuli,"nonword");
 
-	var wse_trial = {
+  //Shuffle the array 4 times
+  stims = shuffle(stims);
+  stims = shuffle(stims);
+  stims = shuffle(stims);
+  stims = shuffle(stims);
+
+
+  //Create 4 blocks
+  //Each block uses 1/4 of the stimuli
+
+  //If debug mode is on (debug_mode = true),
+  //only 5 stimuli will be added to each block.
+  //Otherwise, 36 stimuli will be added.
+  if (debug_mode) {
+    stims_block1 = stims.slice(0,5);
+    stims_block2 = stims.slice(5,10);
+    stims_block3 = stims.slice(10,15);
+    stims_block4 = stims.slice(15,20);
+  }
+  else {
+    stims_block1 = stims.slice(0,36);
+    stims_block2 = stims.slice(36,72);
+    stims_block3 = stims.slice(72,108);
+    stims_block4 = stims.slice(108,144);
+  }
+
+
+
+	var wse_block1 = {
 		type: 'multi-stim-multi-response',
 		//stimuli: ['<div class="centered">+</div>','<div class="centered">CARD</div>','<div class="centered">****</div>','<div class="centered">&nbsp;&nbsp;&nbsp;D<br/>----<br/>&nbsp;&nbsp;&nbsp;P</div>'],
 		//timing_stim: [500,500,500,-1],
 		timing_stim: [1000,target_duration,150,-1],
 		is_html: true,
-		timeline: stims,
+		timeline: stims_block1,
 		randomize_order: true,
 
 		on_finish: function(data) {
@@ -425,11 +468,82 @@
 		}
 	}
 
+  var wse_block2 = {
+		type: 'multi-stim-multi-response',
+		//stimuli: ['<div class="centered">+</div>','<div class="centered">CARD</div>','<div class="centered">****</div>','<div class="centered">&nbsp;&nbsp;&nbsp;D<br/>----<br/>&nbsp;&nbsp;&nbsp;P</div>'],
+		//timing_stim: [500,500,500,-1],
+		timing_stim: [1000,target_duration,150,-1],
+		is_html: true,
+		timeline: stims_block2,
+		randomize_order: true,
+
+		on_finish: function(data) {
+			var key_pressed = String.fromCharCode(JSON.parse(data.key_press));
+			jsPsych.data.addDataToLastTrial({response: key_pressed});
+			jsPsych.data.addDataToLastTrial({reaction_time: JSON.parse(data.rt)})
+
+			if (key_pressed == data.correct_answer.toUpperCase()) {
+				jsPsych.data.addDataToLastTrial({accuracy: 1});
+			}
+			else {
+				jsPsych.data.addDataToLastTrial({accuracy: 0})
+			}
+		}
+	}
+
+  var wse_block3 = {
+    type: 'multi-stim-multi-response',
+    //stimuli: ['<div class="centered">+</div>','<div class="centered">CARD</div>','<div class="centered">****</div>','<div class="centered">&nbsp;&nbsp;&nbsp;D<br/>----<br/>&nbsp;&nbsp;&nbsp;P</div>'],
+    //timing_stim: [500,500,500,-1],
+    timing_stim: [1000,target_duration,150,-1],
+    is_html: true,
+    timeline: stims_block3,
+    randomize_order: true,
+
+    on_finish: function(data) {
+      var key_pressed = String.fromCharCode(JSON.parse(data.key_press));
+      jsPsych.data.addDataToLastTrial({response: key_pressed});
+      jsPsych.data.addDataToLastTrial({reaction_time: JSON.parse(data.rt)})
+
+      if (key_pressed == data.correct_answer.toUpperCase()) {
+        jsPsych.data.addDataToLastTrial({accuracy: 1});
+      }
+      else {
+        jsPsych.data.addDataToLastTrial({accuracy: 0})
+      }
+    }
+  }
+
+  var wse_block4 = {
+    type: 'multi-stim-multi-response',
+    //stimuli: ['<div class="centered">+</div>','<div class="centered">CARD</div>','<div class="centered">****</div>','<div class="centered">&nbsp;&nbsp;&nbsp;D<br/>----<br/>&nbsp;&nbsp;&nbsp;P</div>'],
+    //timing_stim: [500,500,500,-1],
+    timing_stim: [1000,target_duration,150,-1],
+    is_html: true,
+    timeline: stims_block4,
+    randomize_order: true,
+
+    on_finish: function(data) {
+      var key_pressed = String.fromCharCode(JSON.parse(data.key_press));
+      jsPsych.data.addDataToLastTrial({response: key_pressed});
+      jsPsych.data.addDataToLastTrial({reaction_time: JSON.parse(data.rt)})
+
+      if (key_pressed == data.correct_answer.toUpperCase()) {
+        jsPsych.data.addDataToLastTrial({accuracy: 1});
+      }
+      else {
+        jsPsych.data.addDataToLastTrial({accuracy: 0})
+      }
+    }
+  }
+
+
 	var exp_break = {
 		type: 'text',
 		text: '<div class="centered"><p>End of Block.</p><p>Please take a break and press the spacebar when you are ready to continue to the next block.</p>',
 		cont_key: [' ']
 	}
+
 
 	//Final Screen
 	var final_screen = {
@@ -465,9 +579,15 @@
     timeline.push(welcome_trial);
     timeline.push(instructions_block);
 
-    timeline.push(wse_trial);
+    timeline.push(wse_block1);
+    timeline.push(exp_break);
+    timeline.push(wse_block2);
+    timeline.push(exp_break);
+    timeline.push(wse_block3);
+    timeline.push(exp_break);
+    timeline.push(wse_block4);
 
-    //timeline.push(final_screen);
+    timeline.push(final_screen);
 
 
     jsPsych.init({

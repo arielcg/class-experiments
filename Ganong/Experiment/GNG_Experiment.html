@@ -2,24 +2,24 @@
 <html>
     <head>
         <title>GNG Experiment</title>
-        
+
         <!-- Import jsPsych Library & Stylesheet //-->
-        
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="jspsych-5.0.3/jspsych.js"></script>
-        <link href="jspsych-5.0.3/css/jspsych.css" rel="stylesheet" type="text/css"></link>
-        
+        <script src="jspsych-5.0.3/jspsych.js"></script>      <!-- add ../ after the quotation mark and before 'jspsych' //-->
+        <link href="jspsych-5.0.3/css/jspsych.css" rel="stylesheet" type="text/css"></link>   <!-- add ../ after the quotation mark and before 'jspsych' //-->
+
         <!-- Load jsPsych Plugins Here //-->
-        
 
-        <script src="jspsych-5.0.3/plugins/jspsych-instructions.js"></script>
-        <script src="jspsych-5.0.3/plugins/jspsych-text.js"></script>
-        <script src="jspsych-5.0.3/plugins/jspsych-single-textbox.js"></script>
-        <script src="jspsych-5.0.3/plugins/jspsych-single-audio.js"></script>
-        <script src="jspsych-5.0.3/plugins/jspsych-single-stim.js"></script>
 
-        
-        
+        <script src="jspsych-5.0.3/plugins/jspsych-instructions.js"></script>   <!-- add ../ after the quotation mark and before 'jspsych' //-->
+        <script src="jspsych-5.0.3/plugins/jspsych-text.js"></script>           <!-- add ../ after the quotation mark and before 'jspsych' //-->
+        <script src="jspsych-5.0.3/plugins/jspsych-single-textbox.js"></script> <!-- add ../ after the quotation mark and before 'jspsych' //-->
+        <script src="jspsych-5.0.3/plugins/jspsych-single-audio.js"></script>    <!-- add ../ after the quotation mark and before 'jspsych' //-->
+        <script src="jspsych-5.0.3/plugins/jspsych-single-stim.js"></script>     <!-- add ../ after the quotation mark and before 'jspsych' //-->
+
+
+
         <style>
 			div.centered {
 				position: fixed;
@@ -30,12 +30,12 @@
   				transform: translate(-50%, -50%);
 			}
 		</style>
-        
+
     </head>
     <body>
-    
+
     <script>
-    
+
     /*-----------------Ganong Experiment Readme-----------------*/
     //
     //	Welcome to the Ganong Experiment script file
@@ -59,15 +59,20 @@
     //	Each block thus contains 81 trials.
     //
     //	Subjects respond by pushing either the 1 or 0 keys
-    //	Which response is assigned to 1/0 is randomized for each participant. 
-    //		
+    //	Which response is assigned to 1/0 is randomized for each participant.
     //
-    //	****There are two places where you need to make changes.****
     //
-    //		1. 	Instructions_Block
+    //	****There are 3 places where you need to make changes.****
+    //
+    //    1.  At the very top of this file.
+    //        At the top of this HTML file, add ../ to the <script> and <link> lines, immediately before 'jspsych'.
+    //        The lines you need to add ../ to are indicated with comments at the end of the line.
+    //        NOTE: do not add it to the line with: <script src="https://ajax.googleapis
+    //
+    //		2. 	Instructions_Block
     //		   	Enter your own instructions to the participant.
     //
-    //		2. 	Section labeled Parameters
+    //		3. 	Section labeled Parameters
     //		   	This experiment consists of 6 blocks, one for each continuum
     //			For each block you must specify
     //				- the name of the voiced token
@@ -82,13 +87,13 @@
     //
     //
     //	All of the data are presented at the end of the experiment. When the participant
-    //	has finished, copy and paste the data into a plaintext file. Give the textfile a name and 
+    //	has finished, copy and paste the data into a plaintext file. Give the textfile a name and
     //	make sure it ends in the .csv extension. This will produce a comma delimited file that you
     //	can then open easily in Excel.
     //
     //
     //	Testing/Debugging Notes:
-    //	
+    //
     //	The variable 'copyNum' (declared just below this note) is used to determine how many times
     //	each token is played. By default it is set to 9. If you need to debug the code for some reason,
     //	it will take a long time to go through the experiment if each token is played 9 times. My suggestion
@@ -101,7 +106,7 @@
 	//Set how many times each step in a continuum is played for the participant
 	//default: 9
 	var copyNum = 9;
-	
+
 
 	/* Welcome */
   	var welcome_trial = {
@@ -112,17 +117,17 @@
 			jsPsych.data.addProperties({subject: data.responses});
 		}
 	};
-	
-	
+
+
 	/* Instructions Block */
-	
+
 	//Please insert your own text here for the instructions the participant will receive.
 	//The participant will see this text once at the beginning of the experiment.
 	//
 	//To change the instructions, change the text in the "pages" variable below.
 	//Each line in the "pages" variable will be displayed as a separate page of instructions.
 	//Make sure that each line in the "pages" variable --except for the last one-- ends with a comma
-	//e.g., 
+	//e.g.,
 	//pages: [
     //	    'Welcome to the experiment. Click next to begin.',
     //	    'This is the second page of instructions.',
@@ -138,24 +143,24 @@
    		],
     	show_clickable_nav: true
 	};
-	
-	
-	
-	/* Parameters */ 
-	
+
+
+
+	/* Parameters */
+
 	//Here you will specify some values for each continuum.
 	//	- contX_voiced: 	the voiced word/non-word for this continuum (e.g., DASH)
 	//	- contX_voiceless:	the voiceless word/non-word for this continuum (e.g., TASH)
 	//	- contX_stimY:		the path to the each audio file generated by PRAAT for this continuum. Should go in order (stim1 is shortest VOT, stim9 is longest VOT)
-	//							By default the experiment will look for these files in the "Stimuli" directory. 
+	//							By default the experiment will look for these files in the "Stimuli" directory.
 	//                          Change this directory if you have placed the files in a different directory.
-	
-	
+
+
 	//Set these values for Continuum 1
-	
+
 	cont1_voiced = "DASH";
 	cont1_voiceless = "TASH";
-	
+
 	cont1_stim1 = "Stimuli/"+"dash-tash_VOT_5.wav";
 	cont1_stim2 = "Stimuli/"+"dash-tash_VOT_15.wav";
 	cont1_stim3 = "Stimuli/"+"dash-tash_VOT_25.wav";
@@ -165,14 +170,14 @@
 	cont1_stim7 = "Stimuli/"+"dash-tash_VOT_65.wav";
 	cont1_stim8 = "Stimuli/"+"dash-tash_VOT_75.wav";
 	cont1_stim9 = "Stimuli/"+"dash-tash_VOT_85.wav";
-	
-	
-	
+
+
+
 	//Set these values for Continuum 2
-	
+
 	cont2_voiced = "DASH";
 	cont2_voiceless = "TASH";
-	
+
 	cont2_stim1 = "Stimuli/"+"dash-tash_VOT_5.wav";
 	cont2_stim2 = "Stimuli/"+"dash-tash_VOT_15.wav";
 	cont2_stim3 = "Stimuli/"+"dash-tash_VOT_25.wav";
@@ -182,13 +187,13 @@
 	cont2_stim7 = "Stimuli/"+"dash-tash_VOT_65.wav";
 	cont2_stim8 = "Stimuli/"+"dash-tash_VOT_75.wav";
 	cont2_stim9 = "Stimuli/"+"dash-tash_VOT_85.wav";
-	
-	
+
+
 	//Set these values for Continuum 3
-	
+
 	cont3_voiced = "DASH";
 	cont3_voiceless = "TASH";
-	
+
 	cont3_stim1 = "Stimuli/"+"dash-tash_VOT_5.wav";
 	cont3_stim2 = "Stimuli/"+"dash-tash_VOT_15.wav";
 	cont3_stim3 = "Stimuli/"+"dash-tash_VOT_25.wav";
@@ -198,14 +203,14 @@
 	cont3_stim7 = "Stimuli/"+"dash-tash_VOT_65.wav";
 	cont3_stim8 = "Stimuli/"+"dash-tash_VOT_75.wav";
 	cont3_stim9 = "Stimuli/"+"dash-tash_VOT_85.wav";
-	
-	
-	
+
+
+
 	//Set these values for Continuum 4
-	
+
 	cont4_voiced = "DASH";
 	cont4_voiceless = "TASH";
-	
+
 	cont4_stim1 = "Stimuli/"+"dash-tash_VOT_5.wav";
 	cont4_stim2 = "Stimuli/"+"dash-tash_VOT_15.wav";
 	cont4_stim3 = "Stimuli/"+"dash-tash_VOT_25.wav";
@@ -215,13 +220,13 @@
 	cont4_stim7 = "Stimuli/"+"dash-tash_VOT_65.wav";
 	cont4_stim8 = "Stimuli/"+"dash-tash_VOT_75.wav";
 	cont4_stim9 = "Stimuli/"+"dash-tash_VOT_85.wav";
-	
-	
+
+
 	//Set these values for Continuum 5
-	
+
 	cont5_voiced = "DASH";
 	cont5_voiceless = "TASH";
-	
+
 	cont5_stim1 = "Stimuli/"+"dash-tash_VOT_5.wav";
 	cont5_stim2 = "Stimuli/"+"dash-tash_VOT_15.wav";
 	cont5_stim3 = "Stimuli/"+"dash-tash_VOT_25.wav";
@@ -232,13 +237,13 @@
 	cont5_stim8 = "Stimuli/"+"dash-tash_VOT_75.wav";
 	cont5_stim9 = "Stimuli/"+"dash-tash_VOT_85.wav";
 
-	
-	
+
+
 	//Set these values for Continuum 6
-	
+
 	cont6_voiced = "DASH";
 	cont6_voiceless = "TASH";
-	
+
 	cont6_stim1 = "Stimuli/"+"dash-tash_VOT_5.wav";
 	cont6_stim2 = "Stimuli/"+"dash-tash_VOT_15.wav";
 	cont6_stim3 = "Stimuli/"+"dash-tash_VOT_25.wav";
@@ -252,17 +257,17 @@
 
 
 	///////////////////////////////////////////////////////////////////////////////////
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* -----------------Continuum1 Block---------------------- */
-	
+
 	//Randomize which response is assigned to 1 and which is assigned to 0
 	var cont1_push1 = "";
 	var cont1_push0 = "";
-	
+
 	cont1_coinflip = Math.round(Math.random());
 	if (Math.round(Math.random()) == 0) {
 		cont1_push1 = cont1_voiced;
@@ -273,14 +278,14 @@
 		cont1_push0 = cont1_voiced;
 	}
 	////////////////
-	
-		
+
+
 	var continuum1_instructions = {
 		type: 'text',
 		text: '<div class="centered"><p>In this block, press 1 if you hear '+cont1_push1+' and press 0 if you heard '+cont1_push0+'.</p><p>Press the spacebar to begin.</p>',
 		cont_key: [' ']
 	}
-	
+
 	//All of the stimuli for this block go here
 	var continuum1_stimuli = [
 		{stimulus: cont1_stim1, data: {step: '1'} },
@@ -292,25 +297,25 @@
 		{stimulus: cont1_stim7, data: {step: '7'} },
 		{stimulus: cont1_stim8, data: {step: '8'} },
 		{stimulus: cont1_stim9, data: {step: '9'} }
-		
+
 	];
-	
+
 	//Make copyNum copies of each stimulus and randomize them
 	var continuum1_stimuli_randomized = jsPsych.randomization.repeat(continuum1_stimuli, copyNum);
 
-	
+
 	var continuum1_block = {
 		type: 'single-audio',
 		prompt: '<div class="centered">1/'+cont1_push1+'--------------------------------------------0/'+cont1_push0+'</div>',
 		choices: ['1','0'],
 		data: { continuum: cont1_voiced+'-'+cont1_voiceless },
-		
+
 		timeline: continuum1_stimuli_randomized,
-		
-		
+
+
 		on_finish: function(data) {
 			var key = String.fromCharCode(data.key_press);
-			
+
 			if (key == '1') {
 				resp = cont1_push1;
 			}
@@ -318,20 +323,20 @@
 				resp = cont1_push0;
      		}
       		jsPsych.data.addDataToLastTrial({response: resp});
-    	},	
+    	},
 	};
-	
-	
+
+
 	/* -------------End of Continuum1 Block------------------- */
-	
-	
-	
+
+
+
 	/* -----------------Continuum2 Block---------------------- */
-	
+
 	//Randomize which response is assigned to 1 and which is assigned to 0
 	var cont2_push1 = "";
 	var cont2_push0 = "";
-	
+
 	cont2_coinflip = Math.round(Math.random());
 	if (Math.round(Math.random()) == 0) {
 		cont2_push1 = cont2_voiced;
@@ -342,14 +347,14 @@
 		cont2_push0 = cont2_voiced;
 	}
 	////////////////
-	
-		
+
+
 	var continuum2_instructions = {
 		type: 'text',
 		text: '<div class="centered"><p>In this block, press 1 if you hear '+cont2_push1+' and press 0 if you heard '+cont2_push0+'.</p><p>Press the spacebar to begin.</p>',
 		cont_key: [' ']
 	}
-	
+
 	//All of the stimuli for this block go here
 	var continuum2_stimuli = [
 		{stimulus: cont2_stim1, data: {step: '1'} },
@@ -361,25 +366,25 @@
 		{stimulus: cont2_stim7, data: {step: '7'} },
 		{stimulus: cont2_stim8, data: {step: '8'} },
 		{stimulus: cont2_stim9, data: {step: '9'} }
-		
+
 	];
-	
+
 	//Make copyNum copies of each stimulus and randomize them
 	var continuum2_stimuli_randomized = jsPsych.randomization.repeat(continuum2_stimuli, copyNum);
 
-	
+
 	var continuum2_block = {
 		type: 'single-audio',
 		prompt: '<div class="centered">1/'+cont2_push1+'--------------------------------------------0/'+cont2_push0+'</div>',
 		choices: ['1','0'],
 		data: { continuum: cont2_voiced+'-'+cont2_voiceless },
-		
+
 		timeline: continuum2_stimuli_randomized,
-		
-		
+
+
 		on_finish: function(data) {
 			var key = String.fromCharCode(data.key_press);
-			
+
 			if (key == '1') {
 				resp = cont2_push1;
 			}
@@ -387,21 +392,21 @@
 				resp = cont2_push0;
      		}
       		jsPsych.data.addDataToLastTrial({response: resp});
-    	},	
+    	},
 	};
-	
-	
+
+
 	/* -------------End of continuum2 Block------------------- */
-	
-	
-	
-	
+
+
+
+
 		/* -----------------continuum3 Block---------------------- */
-	
+
 	//Randomize which response is assigned to 1 and which is assigned to 0
 	var cont3_push1 = "";
 	var cont3_push0 = "";
-	
+
 	cont3_coinflip = Math.round(Math.random());
 	if (Math.round(Math.random()) == 0) {
 		cont3_push1 = cont3_voiced;
@@ -412,14 +417,14 @@
 		cont3_push0 = cont3_voiced;
 	}
 	////////////////
-	
-		
+
+
 	var continuum3_instructions = {
 		type: 'text',
 		text: '<div class="centered"><p>In this block, press 1 if you hear '+cont3_push1+' and press 0 if you heard '+cont3_push0+'.</p><p>Press the spacebar to begin.</p>',
 		cont_key: [' ']
 	}
-	
+
 	//All of the stimuli for this block go here
 	var continuum3_stimuli = [
 		{stimulus: cont3_stim1, data: {step: '1'} },
@@ -431,25 +436,25 @@
 		{stimulus: cont3_stim7, data: {step: '7'} },
 		{stimulus: cont3_stim8, data: {step: '8'} },
 		{stimulus: cont3_stim9, data: {step: '9'} }
-		
+
 	];
-	
+
 	//Make copyNum copies of each stimulus and randomize them
 	var continuum3_stimuli_randomized = jsPsych.randomization.repeat(continuum3_stimuli, copyNum);
 
-	
+
 	var continuum3_block = {
 		type: 'single-audio',
 		prompt: '<div class="centered">1/'+cont3_push1+'--------------------------------------------0/'+cont3_push0+'</div>',
 		choices: ['1','0'],
 		data: { continuum: cont3_voiced+'-'+cont3_voiceless },
-		
+
 		timeline: continuum3_stimuli_randomized,
-		
-		
+
+
 		on_finish: function(data) {
 			var key = String.fromCharCode(data.key_press);
-			
+
 			if (key == '1') {
 				resp = cont3_push1;
 			}
@@ -457,19 +462,19 @@
 				resp = cont3_push0;
      		}
       		jsPsych.data.addDataToLastTrial({response: resp});
-    	},	
+    	},
 	};
-	
-	
+
+
 	/* -------------End of continuum3 Block------------------- */
-	
-	
+
+
 	/* -----------------continuum4 Block---------------------- */
-	
+
 	//Randomize which response is assigned to 1 and which is assigned to 0
 	var cont4_push1 = "";
 	var cont4_push0 = "";
-	
+
 	cont4_coinflip = Math.round(Math.random());
 	if (Math.round(Math.random()) == 0) {
 		cont4_push1 = cont4_voiced;
@@ -480,14 +485,14 @@
 		cont4_push0 = cont4_voiced;
 	}
 	////////////////
-	
-		
+
+
 	var continuum4_instructions = {
 		type: 'text',
 		text: '<div class="centered"><p>In this block, press 1 if you hear '+cont4_push1+' and press 0 if you heard '+cont4_push0+'.</p><p>Press the spacebar to begin.</p>',
 		cont_key: [' ']
 	}
-	
+
 	//All of the stimuli for this block go here
 	var continuum4_stimuli = [
 		{stimulus: cont4_stim1, data: {step: '1'} },
@@ -499,25 +504,25 @@
 		{stimulus: cont4_stim7, data: {step: '7'} },
 		{stimulus: cont4_stim8, data: {step: '8'} },
 		{stimulus: cont4_stim9, data: {step: '9'} }
-		
+
 	];
-	
+
 	//Make copyNum copies of each stimulus and randomize them
 	var continuum4_stimuli_randomized = jsPsych.randomization.repeat(continuum4_stimuli, copyNum);
 
-	
+
 	var continuum4_block = {
 		type: 'single-audio',
 		prompt: '<div class="centered">1/'+cont4_push1+'--------------------------------------------0/'+cont4_push0+'</div>',
 		choices: ['1','0'],
 		data: { continuum: cont4_voiced+'-'+cont4_voiceless },
-		
+
 		timeline: continuum4_stimuli_randomized,
-		
-		
+
+
 		on_finish: function(data) {
 			var key = String.fromCharCode(data.key_press);
-			
+
 			if (key == '1') {
 				resp = cont4_push1;
 			}
@@ -525,21 +530,21 @@
 				resp = cont4_push0;
      		}
       		jsPsych.data.addDataToLastTrial({response: resp});
-    	},	
+    	},
 	};
-	
-	
+
+
 	/* -------------End of continuum4 Block------------------- */
-	
-	
-	
-	
+
+
+
+
 		/* -----------------continuum5 Block---------------------- */
-	
+
 	//Randomize which response is assigned to 1 and which is assigned to 0
 	var cont5_push1 = "";
 	var cont5_push0 = "";
-	
+
 	cont5_coinflip = Math.round(Math.random());
 	if (Math.round(Math.random()) == 0) {
 		cont5_push1 = cont5_voiced;
@@ -550,14 +555,14 @@
 		cont5_push0 = cont5_voiced;
 	}
 	////////////////
-	
-		
+
+
 	var continuum5_instructions = {
 		type: 'text',
 		text: '<div class="centered"><p>In this block, press 1 if you hear '+cont5_push1+' and press 0 if you heard '+cont5_push0+'.</p><p>Press the spacebar to begin.</p>',
 		cont_key: [' ']
 	}
-	
+
 	//All of the stimuli for this block go here
 	var continuum5_stimuli = [
 		{stimulus: cont5_stim1, data: {step: '1'} },
@@ -569,25 +574,25 @@
 		{stimulus: cont5_stim7, data: {step: '7'} },
 		{stimulus: cont5_stim8, data: {step: '8'} },
 		{stimulus: cont5_stim9, data: {step: '9'} }
-		
+
 	];
-	
+
 	//Make copyNum copies of each stimulus and randomize them
 	var continuum5_stimuli_randomized = jsPsych.randomization.repeat(continuum5_stimuli, copyNum);
 
-	
+
 	var continuum5_block = {
 		type: 'single-audio',
 		prompt: '<div class="centered">1/'+cont5_push1+'--------------------------------------------0/'+cont5_push0+'</div>',
 		choices: ['1','0'],
 		data: { continuum: cont5_voiced+'-'+cont5_voiceless },
-		
+
 		timeline: continuum5_stimuli_randomized,
-		
-		
+
+
 		on_finish: function(data) {
 			var key = String.fromCharCode(data.key_press);
-			
+
 			if (key == '1') {
 				resp = cont5_push1;
 			}
@@ -595,21 +600,21 @@
 				resp = cont5_push0;
      		}
       		jsPsych.data.addDataToLastTrial({response: resp});
-    	},	
+    	},
 	};
-	
-	
+
+
 	/* -------------End of continuum5 Block------------------- */
-	
-	
-	
-	
+
+
+
+
 	/* -----------------continuum6 Block---------------------- */
-	
+
 	//Randomize which response is assigned to 1 and which is assigned to 0
 	var cont6_push1 = "";
 	var cont6_push0 = "";
-	
+
 	cont6_coinflip = Math.round(Math.random());
 	if (Math.round(Math.random()) == 0) {
 		cont6_push1 = cont6_voiced;
@@ -620,14 +625,14 @@
 		cont6_push0 = cont6_voiced;
 	}
 	////////////////
-	
-		
+
+
 	var continuum6_instructions = {
 		type: 'text',
 		text: '<div class="centered"><p>In this block, press 1 if you hear '+cont6_push1+' and press 0 if you heard '+cont6_push0+'.</p><p>Press the spacebar to begin.</p>',
 		cont_key: [' ']
 	}
-	
+
 	//All of the stimuli for this block go here
 	var continuum6_stimuli = [
 		{stimulus: cont6_stim1, data: {step: '1'} },
@@ -639,25 +644,25 @@
 		{stimulus: cont6_stim7, data: {step: '7'} },
 		{stimulus: cont6_stim8, data: {step: '8'} },
 		{stimulus: cont6_stim9, data: {step: '9'} }
-		
+
 	];
-	
+
 	//Make copyNum copies of each stimulus and randomize them
 	var continuum6_stimuli_randomized = jsPsych.randomization.repeat(continuum6_stimuli, copyNum);
 
-	
+
 	var continuum6_block = {
 		type: 'single-audio',
 		prompt: '<div class="centered">1/'+cont6_push1+'--------------------------------------------0/'+cont6_push0+'</div>',
 		choices: ['1','0'],
 		data: { continuum: cont6_voiced+'-'+cont6_voiceless },
-		
+
 		timeline: continuum6_stimuli_randomized,
-		
-		
+
+
 		on_finish: function(data) {
 			var key = String.fromCharCode(data.key_press);
-			
+
 			if (key == '1') {
 				resp = cont6_push1;
 			}
@@ -665,43 +670,43 @@
 				resp = cont6_push0;
      		}
       		jsPsych.data.addDataToLastTrial({response: resp});
-    	},	
+    	},
 	};
-	
-	
+
+
 	/* -------------End of continuum6 Block------------------- */
-	
-	
+
+
 	var exp_break = {
 		type: 'text',
 		text: '<div class="centered"><p>End of Block.</p><p>Please take a break and press the spacebar when you are ready to continue to the next block.</p>',
 		cont_key: [' ']
 	}
-	
+
 	/* TODO
-	
+
 	(✓)make a system to randomize the order of the blocks
 	(✓)Change the number of stimuli copies to 9
 	(✓)add something to filter out irrelevant trials from the data
 	( )comment the code
 	(✓)(last)Make 6 copies of the continuum
-	
+
 	*/
-	
-	
-	
-	
+
+
+
+
 	//Final Screen
 	var final_screen = {
 		type: 'text',
 		text: '<div class="centered"><p>This is the end of the experiment. Thank you for your participation.</p>' +
 				  '<p>Please press any key to end this session and bring up the results.</p>'
 	};
-    
-    
+
+
     //Fisher-Yates function to randomize the elements in an array
     //from https://www.frankmitchell.org/2015/01/fisher-yates/
-    
+
     function shuffle (array) {
 		var i = 0;
 		var j = 0;
@@ -715,17 +720,17 @@
   		}
   		return array;
 	}
-	
+
 	///////////////////////////////////////////////////////////
-	
-	
-    
+
+
+
     //-------- Create the Experiment Timeline ---------//
     var timeline = [];
     timeline.push(welcome_trial);
     timeline.push(instructions_block);
-    
-    
+
+
     //Randomize the order in which the test blocks are presented
     var continua = [1,2,3,4,5,6];
     var i;
@@ -763,10 +768,10 @@
 	    	timeline.push(exp_break);
 	    }
     }
-    
+
     timeline.push(final_screen);
-    
-    
+
+
     jsPsych.init({
         timeline: timeline,
         on_finish: function() {
@@ -774,18 +779,18 @@
         	var audioData = jsPsych.data.getTrialsOfType('single-audio');
         	var x;
         	var dataString = '"Subject","Trial","Continuum","Stimulus","Continuum_Step","Response"<br/>';
-        	
+
         	for (x = 0; x < audioData.length; x++) {
         		var trial = x+1;
         		dataString += audioData[x].subject+','+trial+',"'+audioData[x].continuum+'","'+audioData[x].stimulus+'",'+audioData[x].step+',"'+audioData[x].response+'"<br/>';
         	}
         	var display_element = jsPsych.getDisplayElement();
         	display_element.append($('<pre id="jspsych-data-display">'+dataString+'</pre>'));
-        	
+
         }
     })
 
     </script>
-    
+
     </body>
 </html>
